@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-import Geosuggest from 'react-geosuggest';
 import '../stylesheet/App.css';
 import { Row, Col, Form, Icon, Input, Button, Card, notification } from 'antd';
+// cookies to save user and use all over app
+import cookie from 'react-cookies'
 
 const FormItem = Form.Item;
 
 class Login extends Component {
+
+  componentWillMount() {
+    console.log(cookie.load('user'), 'cookies user');
+    if(cookie.load('user')) {
+      const { history } = this.props;
+      history.push('/dashboard');
+    }
+  }
 
   openNotificationWithIcon = (type, msg) => {
     notification[type]({
@@ -18,7 +27,7 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // fetch used for calling server to save users data
         fetch('http://localhost:4000/api/v1/users', {
           headers: {
             'Accept': 'application/json',
@@ -31,17 +40,16 @@ class Login extends Component {
         .then(res => {
           const { status, msg, data } = res;
           if(status) {
+            cookie.save('user', data, { path: '/' });
             this.openNotificationWithIcon('success', msg);
+            const { history } = this.props;
+            history.push('/dashboard');
           } else {
             this.openNotificationWithIcon('error', msg);
           }
         });
       }
     });
-  }
-
-  onSuggestSelect(suggest) {
-    console.log(suggest);
   }
 
   render() {
@@ -51,13 +59,6 @@ class Login extends Component {
         <Col>
           <Card title="LOGIN" bordered={true} hoverable={true}>
             <Form onSubmit={this.handleSubmit} className="login-form">
-              <Geosuggest
-                ref={el=>this._geoSuggest=el}
-                placeholder="Start typing!"
-                onSuggestSelect={this.onSuggestSelect}
-                location={new google.maps.LatLng(53.558572, 9.9278215)}
-                radius="20" 
-              />
               <InputField
                 fieldName='userName'
                 placeholder='Username'
@@ -95,7 +96,7 @@ class Login extends Component {
 
 export default Form.create()(Login);
 
-const InputField = ({ fieldName, placeholder, message, required, rules, getFieldDecorator }) => {
+const InputField = ({ fieldName, placeholder, rules, getFieldDecorator }) => {
   return (
     <FormItem>
       {getFieldDecorator(fieldName, {

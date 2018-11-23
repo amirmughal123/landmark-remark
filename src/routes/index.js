@@ -2,13 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 
-import Login from '../pages/login';
+import Login from '../pages/Login';
+import Dashboard from '../pages/Dashboard';
 
 export const renderRoutes = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" render={ props => <AppRoute Component={Login} props={props} /> } />
+        <Route exact path='/' render={ props => <AppRoute Component={Login} props={props} /> } />
+        <Route exact path='/dashboard' render={ props => <AppRoute Component={Dashboard} props={props} />} />
       </Switch>
     </Router>
   )

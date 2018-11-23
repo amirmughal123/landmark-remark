@@ -13,14 +13,24 @@
 .geosuggest {
   font-size: 1rem;
   position: relative;
-  width: 100%;
+  width: 17%;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 15px
 }
 
 .geosuggest__input {
   width: 100%;
-  border: 2px solid transparent;
-  box-shadow: 0 0 1px #3d464d;
+  height: 32px;
+  transition: all .3s;
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #d9d9d9;
+  box-shadow: 0 0 1px #d9d9d9;
   padding: .5em 1em;
   -webkit-transition: border 0.2s, box-shadow 0.2s;
   transition: border 0.2s, box-shadow 0.2s;
@@ -35,7 +45,7 @@
   padding: 0;
   margin-top: -1px;
   background: #fff;
-  border: 2px solid #267dc0;
+  border: 1px solid #267dc0;
   border-top-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
@@ -56,4 +66,15 @@
   font-size: 1rem;
   padding: .5em .65em;
   cursor: pointer;
+}
+
+/* ----- dashboard  */
+
+.form-layout {
+  display: flex;
+  justify-content: center;
+}
+
+.header-notes {
+  text-align: center
 }
