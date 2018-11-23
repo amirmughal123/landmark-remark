@@ -1,0 +1,21 @@
+Approach used in developing front end.
+
+First of all I have used simple react not used redux because the app is not too complex,
+not too much parent child dependencies.
+
+I have used ant design library for userinterface designing also have do some custom designing.
+I have save user coords which he select using geosuggestions , he can set location of all over,
+world, and leave note on any location.
+
+for backend I have make two models one for user and other for maps.
+we can handle data in any way user locations or any else.
+I have user react google map with its loader to display map with multiple markers and multiple
+info windows where I have shown title and text of not every user can view location of notes added by other.
+
+I have spend 13 hours to do that task.
+
+proper react structure set with webpack from scratch.
+
+limitations are that if user not turn on permission of location that not able to set coords of user
+so for  that I have use geo suggestion so user can add location during leaving note.
+also another limitation is google map keys are payed now i have used free one which will expire in few hits.
