@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Layout, Form, Icon, Input, Button, notification } from 'antd';
 import Geosuggest from 'react-geosuggest';
 import cookie from 'react-cookies';
+import LandMap from './Dashboard/Map';
+
 
 const { Header, Footer, Sider, Content } = Layout;
 const FormItem = Form.Item;
@@ -12,7 +14,8 @@ class Dashboard extends Component {
     super();
 
     this.state = {
-      location: {}
+      location: {},
+      notes: []
     }
   }
 
@@ -21,6 +24,19 @@ class Dashboard extends Component {
       const { history } = this.props;
       history.push('/');
     }
+  }
+
+  getNotes() {
+    fetch('http://localhost:4000/api/v1/notes', {
+      method: 'GET',
+    })
+    .then(response => response.json())
+    .then(res => {
+      const { status, msg, data } = res;
+      if(data && data.length > 0) {
+        this.setState({ notes: data });
+      }
+    });
   }
 
   hasErrors(fieldsError){
@@ -37,13 +53,13 @@ class Dashboard extends Component {
   componentDidMount() {
     // To disabled submit button at the beginning.
     this.props.form.validateFields();
+    this.getNotes();
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values, this.state.location);
         const { lat, lng } = this.state.location;
         if(!lat || !lng ) {
           this.openNotificationWithIcon('error', 'Please change or set location', 'Location');
@@ -79,6 +95,7 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { notes } = this.state;
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
     // Only show error after a field is touched.
     const userNameError = isFieldTouched('userName') && getFieldError('userName');
@@ -128,7 +145,11 @@ class Dashboard extends Component {
             </FormItem>
           </Form>
         </Content>
-        <Footer>Footer</Footer>
+        <Footer>
+          <LandMap
+            notes={notes} 
+          />
+        </Footer>
       </Layout>
     )
   }
